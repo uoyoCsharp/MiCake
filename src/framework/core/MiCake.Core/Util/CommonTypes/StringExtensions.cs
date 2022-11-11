@@ -1,6 +1,4 @@
 ﻿using MiCake.Core.Util.Collections;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace MiCake.Core.Util
@@ -38,27 +36,11 @@ namespace MiCake.Core.Util
         }
 
         /// <summary>
-        /// Indicates whether this string is null or an System.String.Empty string.
-        /// </summary>
-        public static bool IsNullOrEmpty(this string str)
-        {
-            return string.IsNullOrEmpty(str);
-        }
-
-        /// <summary>
-        /// indicates whether this string is null, empty, or consists only of white-space characters.
-        /// </summary>
-        public static bool IsNullOrWhiteSpace(this string str)
-        {
-            return string.IsNullOrWhiteSpace(str);
-        }
-
-        /// <summary>
         /// Gets a substring of a string from beginning of the string.
         /// </summary>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="str"/> is null</exception>
         /// <exception cref="ArgumentException">Thrown if <paramref name="len"/> is bigger that string's length</exception>
-        public static string Left(this string str, int len)
+        private static string Left(this string str, int len)
         {
             CheckValue.NotNull(str, nameof(str));
 
@@ -125,7 +107,7 @@ namespace MiCake.Core.Util
         /// <returns>Modified string or the same string if it has not any of given postfixes</returns>
         public static string? RemovePostFix(this string str, StringComparison comparisonType, params string[] postFixes)
         {
-            if (str.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(str))
             {
                 return null;
             }
@@ -166,7 +148,7 @@ namespace MiCake.Core.Util
         /// <returns>Modified string or the same string if it has not any of given prefixes</returns>
         public static string? RemovePreFix(this string str, StringComparison comparisonType, params string[] preFixes)
         {
-            if (str.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(str))
             {
                 return null;
             }
@@ -215,38 +197,6 @@ namespace MiCake.Core.Util
             }
 
             return str.Substring(str.Length - len, len);
-        }
-
-        /// <summary>
-        /// Uses string.Split method to split given string by given separator.
-        /// </summary>
-        public static string[] Split(this string str, string separator)
-        {
-            return str.Split(new[] { separator }, StringSplitOptions.None);
-        }
-
-        /// <summary>
-        /// Uses string.Split method to split given string by given separator.
-        /// </summary>
-        public static string[] Split(this string str, string separator, StringSplitOptions options)
-        {
-            return str.Split(new[] { separator }, options);
-        }
-
-        /// <summary>
-        /// Uses string.Split method to split given string by <see cref="Environment.NewLine"/>.
-        /// </summary>
-        public static string[] SplitToLines(this string str)
-        {
-            return str.Split(Environment.NewLine);
-        }
-
-        /// <summary>
-        /// Uses string.Split method to split given string by <see cref="Environment.NewLine"/>.
-        /// </summary>
-        public static string[] SplitToLines(this string str, StringSplitOptions options)
-        {
-            return str.Split(Environment.NewLine, options);
         }
 
         /// <summary>
@@ -313,21 +263,6 @@ namespace MiCake.Core.Util
         {
             CheckValue.NotNull(value, nameof(value));
             return (T)Enum.Parse(typeof(T), value, ignoreCase);
-        }
-
-        public static string ToMd5(this string str)
-        {
-            using var md5 = MD5.Create();
-            var inputBytes = Encoding.UTF8.GetBytes(str);
-            var hashBytes = md5.ComputeHash(inputBytes);
-
-            var sb = new StringBuilder();
-            foreach (var hashByte in hashBytes)
-            {
-                sb.Append(hashByte.ToString("X2"));
-            }
-
-            return sb.ToString();
         }
 
         /// <summary>
@@ -414,25 +349,6 @@ namespace MiCake.Core.Util
             }
 
             return str.Left(maxLength - postfix.Length) + postfix;
-        }
-
-        /// <summary>
-        /// Converts given string to a byte array using <see cref="Encoding.UTF8"/> encoding.
-        /// </summary>
-        public static byte[] GetBytes(this string str)
-        {
-            return str.GetBytes(Encoding.UTF8);
-        }
-
-        /// <summary>
-        /// Converts given string to a byte array using the given <paramref name="encoding"/>
-        /// </summary>
-        public static byte[] GetBytes(this string str, Encoding encoding)
-        {
-            CheckValue.NotNull(str, nameof(str));
-            CheckValue.NotNull(encoding, nameof(encoding));
-
-            return encoding.GetBytes(str);
         }
     }
 }

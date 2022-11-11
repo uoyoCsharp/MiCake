@@ -5,7 +5,7 @@
     /// </summary>
     public static class Listxtensions
     {
-        public static int FindIndex<T>(this IList<T> source, Predicate<T> selector)
+        private static int FindIndex<T>(this IList<T> source, Predicate<T> selector)
         {
             for (var i = 0; i < source.Count; ++i)
             {
@@ -18,12 +18,12 @@
             return -1;
         }
 
-        public static void AddFirst<T>(this IList<T> source, T item)
+        private static void AddFirst<T>(this IList<T> source, T item)
         {
             source.Insert(0, item);
         }
 
-        public static void AddLast<T>(this IList<T> source, T item)
+        private static void AddLast<T>(this IList<T> source, T item)
         {
             source.Insert(source.Count, item);
         }
@@ -99,29 +99,37 @@
             }
         }
 
-        public static void ReplaceOne<T>(this IList<T> source, Predicate<T> selector, T item)
+        public static void MoveItem<T>(this List<T> source, Predicate<T> selector, int targetIndex)
         {
-            for (int i = 0; i < source.Count; i++)
+            if (!targetIndex.IsBetween(0, source.Count - 1))
             {
-                if (selector(source[i]))
-                {
-                    source[i] = item;
-                    return;
-                }
+                throw new IndexOutOfRangeException("targetIndex should be between 0 and " + (source.Count - 1));
             }
+
+            var currentIndex = source.FindIndex(0, selector);
+            if (currentIndex == targetIndex)
+            {
+                return;
+            }
+
+            var item = source[currentIndex];
+            source.RemoveAt(currentIndex);
+            source.Insert(targetIndex, item);
         }
 
-        public static void ReplaceOne<T>(this IList<T> source, Predicate<T> selector, Func<T, T> itemFactory)
+        public static T GetOrAdd<T>(this IList<T> source, Func<T, bool> selector, Func<T> factory)
         {
-            for (int i = 0; i < source.Count; i++)
+            CheckValue.NotNull(source, nameof(source));
+
+            var item = source.FirstOrDefault(selector);
+
+            if (item == null)
             {
-                var item = source[i];
-                if (selector(item))
-                {
-                    source[i] = itemFactory(item);
-                    return;
-                }
+                item = factory();
+                source.Add(item);
             }
+
+            return item;
         }
 
         /// <summary>
@@ -170,51 +178,6 @@
             return source;
         }
 
-        public static void ReplaceOne<T>(this IList<T> source, T item, T replaceWith)
-        {
-            for (int i = 0; i < source.Count; i++)
-            {
-                if (Comparer<T>.Default.Compare(source[i], item) == 0)
-                {
-                    source[i] = replaceWith;
-                    return;
-                }
-            }
-        }
-
-        public static void MoveItem<T>(this List<T> source, Predicate<T> selector, int targetIndex)
-        {
-            if (!targetIndex.IsBetween(0, source.Count - 1))
-            {
-                throw new IndexOutOfRangeException("targetIndex should be between 0 and " + (source.Count - 1));
-            }
-
-            var currentIndex = source.FindIndex(0, selector);
-            if (currentIndex == targetIndex)
-            {
-                return;
-            }
-
-            var item = source[currentIndex];
-            source.RemoveAt(currentIndex);
-            source.Insert(targetIndex, item);
-        }
-
-        public static T GetOrAdd<T>(this IList<T> source, Func<T, bool> selector, Func<T> factory)
-        {
-            CheckValue.NotNull(source, nameof(source));
-
-            var item = source.FirstOrDefault(selector);
-
-            if (item == null)
-            {
-                item = factory();
-                source.Add(item);
-            }
-
-            return item;
-        }
-
         /// <summary>
         /// Sort a list by a topological sorting, which consider their dependencies.
         /// </summary>
@@ -222,7 +185,7 @@
         /// <param name="source">A list of objects to sort</param>
         /// <param name="getDependencies">Function to resolve the dependencies</param>
         /// <returns></returns>
-        public static List<T> SortByDependencies<T>(this IEnumerable<T> source, Func<T, IEnumerable<T>> getDependencies) where T : notnull
+        internal static List<T> SortByDependencies<T>(this IEnumerable<T> source, Func<T, IEnumerable<T>> getDependencies) where T : notnull
         {
             /* See: http://www.codeproject.com/Articles/869059/Topological-sorting-in-Csharp
              *      http://en.wikipedia.org/wiki/Topological_sorting

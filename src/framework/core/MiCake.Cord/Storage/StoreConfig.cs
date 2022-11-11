@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 namespace MiCake.Cord.Storage
 {
     /// <summary>
-    /// This is an internal API  not subject to the same compatibility standards as public APIs.
+    /// This is an internal API not subject to the same compatibility standards as public APIs.
     /// It may be changed or removed without notice in any release.
     /// </summary>
     public class StoreConfig : IDisposable

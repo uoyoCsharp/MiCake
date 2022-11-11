@@ -46,7 +46,8 @@ namespace MiCake.Cord.Storage.Internal
         {
             CheckValue.NotNull(name, nameof(name));
 
-            var clrMember = _originalType.GetMembersInHierarchy(name).FirstOrDefault();
+
+            var clrMember = TypeHelper.GetMembersInHierarchy(_originalType, name).FirstOrDefault();
             if (clrMember == null)
             {
                 throw new InvalidOperationException($"The property '{name}' cannot be added to the type '{_originalType.Name}' " +
@@ -71,7 +72,7 @@ namespace MiCake.Cord.Storage.Internal
 
             if (memberInfo == null)
             {
-                var clrMember = _originalType.GetMembersInHierarchy(propertyName).FirstOrDefault()
+                var clrMember = TypeHelper.GetMembersInHierarchy(_originalType, propertyName).FirstOrDefault()
                                     ?? throw new InvalidOperationException($"The property '{propertyName}' cannot be added to the type '{_originalType.Name}' " +
                                          $"because there was no property type specified and there is no corresponding CLR property or field.");
 
@@ -122,7 +123,7 @@ namespace MiCake.Cord.Storage.Internal
         {
             CheckValue.NotNullOrEmpty(propertyName, nameof(propertyName));
 
-            if (_originalType.GetMembersInHierarchy(propertyName).Count() == 0)
+            if (TypeHelper.GetMembersInHierarchy(_originalType, propertyName).Count() == 0)
             {
                 throw new ArgumentException($"The property name '{propertyName}' is not belong to {_originalType.Name}");
             }

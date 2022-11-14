@@ -1,4 +1,4 @@
-﻿using MiCake.Cord.Storage.Internal;
+﻿using MiCake.Cord.Storage;
 using MiCake.Core.Util;
 using MiCake.Core.Util.Expressions;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ namespace MiCake.EntityFrameworkCore.StorageInterpretor.Strategy
 {
     internal class EntityAddQueryFilterStrategy : IConfigModelBuilderStrategy
     {
-        public ModelBuilder Config(ModelBuilder modelBuilder, StoreEntityType storeEntity, Type efModelType)
+        public ModelBuilder Config(ModelBuilder modelBuilder, IConventionStoreEntity storeEntity, Type efModelType)
         {
             var filters = storeEntity.GetQueryFilters();
 

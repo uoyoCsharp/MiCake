@@ -9,7 +9,7 @@ namespace MiCake.Cord.Storage.Internal
     /// 
     /// Represents a description of an object property that needs to be persisted.
     /// </summary>
-    public class StoreProperty : IStoreProperty, IConventionStoreProperty
+    internal class StoreProperty : IStoreProperty, IConventionStoreProperty
     {
         private readonly Type _clrPropertyType;
         private readonly PropertyInfo _clrPropertyInfo;

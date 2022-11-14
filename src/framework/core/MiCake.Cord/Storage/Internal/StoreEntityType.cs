@@ -11,7 +11,7 @@ namespace MiCake.Cord.Storage.Internal
     /// 
     /// Represents a description of an object that needs to be persisted.
     /// </summary>
-    public class StoreEntityType : IStoreEntityType, IConventionStoreEntity
+    internal class StoreEntityType : IStoreEntityType, IConventionStoreEntity
     {
         private readonly Type _originalType;
         private bool _directDeletion = true;

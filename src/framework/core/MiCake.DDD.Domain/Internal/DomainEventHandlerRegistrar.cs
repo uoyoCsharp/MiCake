@@ -9,6 +9,17 @@ namespace MiCake.DDD.Domain.Internal
     {
         //Base on MediatR.Registration
         //see https://github.com/jbogard/MediatR.Extensions.Microsoft.DependencyInjection
+
+        /// <summary>
+        /// This is an internal API  not subject to the same compatibility standards as public APIs.
+        /// It may be changed or removed without notice in any release.
+        /// 
+        /// <para>
+        ///     pls don't use this method if you are not farmiliar with it.
+        /// </para>
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="miCakeModules"></param>
         public static void ResigterDomainEventHandler(this IServiceCollection services, IMiCakeModuleCollection miCakeModules)
         {
             var assemblies = miCakeModules.GetAssemblies(false).ToList();

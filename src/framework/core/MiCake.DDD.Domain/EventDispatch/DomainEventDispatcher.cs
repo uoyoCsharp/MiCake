@@ -2,7 +2,7 @@
 
 namespace MiCake.DDD.Domain.EventDispatch
 {
-    public class DomainEventDispatcher : IDomainEventDispatcher
+    internal class DomainEventDispatcher : IDomainEventDispatcher
     {
         private static readonly ConcurrentDictionary<Type, DomainEventHandlerWrapper> _domainEventHandlers = new();
 

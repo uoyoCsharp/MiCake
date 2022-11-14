@@ -1,6 +1,6 @@
 ﻿namespace MiCake.Cord.Storage
 {
-    public struct StorePropertyDefaultValue
+    public readonly struct StorePropertyDefaultValue
     {
         public object? DefaultValue { get; }
 

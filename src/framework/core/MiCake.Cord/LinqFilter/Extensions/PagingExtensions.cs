@@ -1,4 +1,6 @@
-﻿namespace MiCake.Cord.LinqFilter.Extensions
+﻿using MiCake.Cord.Paging;
+
+namespace MiCake.Cord.LinqFilter.Extensions
 {
     public static class PagingExtensions
     {
@@ -11,6 +13,11 @@
             }
 
             return query.Skip(pageIndex * pageSize).Take(pageSize);
+        }
+
+        public static IQueryable<T> Page<T>(this IQueryable<T> query, PaginationFilter paginationFilter)
+        {
+            return query.Page(paginationFilter.PageIndex, paginationFilter.PageSize);
         }
     }
 }

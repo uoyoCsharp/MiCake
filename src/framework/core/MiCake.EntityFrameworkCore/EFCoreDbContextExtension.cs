@@ -25,6 +25,9 @@ namespace MiCake.EntityFrameworkCore
             var efCoreStoreExpression = new DefaultEFStoreModelInterpretor(efCoreExpressionOptions);
             efCoreStoreExpression.Interpret(domainStoreConfig.GetStoreModel(), builder);
 
+            // release micake store config
+            domainStoreConfig?.Dispose();
+
             return builder;
         }
 

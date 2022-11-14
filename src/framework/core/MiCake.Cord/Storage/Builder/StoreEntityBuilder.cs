@@ -8,7 +8,7 @@ namespace MiCake.Cord.Storage.Builder
 {
     public class StoreEntityBuilder : IHasAccessor<StoreEntityType>
     {
-        protected readonly StoreEntityType _entitySource;
+        private readonly StoreEntityType _entitySource;
 
         StoreEntityType IHasAccessor<StoreEntityType>.AccessibleData => _entitySource;
 

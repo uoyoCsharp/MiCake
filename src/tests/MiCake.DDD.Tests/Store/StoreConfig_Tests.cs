@@ -14,7 +14,7 @@ namespace MiCake.Cord.Tests.Store
         [Fact]
         public void Create_Model_With_OneProvider()
         {
-            var config = new StoreConfig().AddModelProvider(new FakeStoreModelProvider());
+            var config = new DomainObjectStoreConfig().AddModelProvider(new FakeStoreModelProvider());
             var model = config.GetStoreModel();
             Assert.Single(model.GetStoreEntities());
 
@@ -26,7 +26,7 @@ namespace MiCake.Cord.Tests.Store
         [Fact]
         public void Create_Model_With_TwoProvider_ConfigSameEntity()
         {
-            var config = new StoreConfig();
+            var config = new DomainObjectStoreConfig();
             config.AddModelProvider(new FakeStoreModelProvider());
             config.AddModelProvider(new FakeStoreModelProvider2());
 
@@ -41,7 +41,7 @@ namespace MiCake.Cord.Tests.Store
         [Fact]
         public void Create_Model_With_TwoProvider_ConfigDifferentEntity()
         {
-            var config = new StoreConfig();
+            var config = new DomainObjectStoreConfig();
             config.AddModelProvider(new FakeStoreModelProvider());
             config.AddModelProvider(new FakeStoreModelProvider3());
 
@@ -60,7 +60,7 @@ namespace MiCake.Cord.Tests.Store
         [Fact]
         public void Can_Remove_StoreEntity()
         {
-            var config = new StoreConfig();
+            var config = new DomainObjectStoreConfig();
             config.AddModelProvider(new FakeStoreModelProvider());
             var model = config.GetStoreModel();
 

@@ -11,7 +11,7 @@
     /// </summary>
     /// <typeparam name="T1"></typeparam>
     /// <typeparam name="T2"></typeparam>
-    public class Map<T1, T2> where T1 : notnull where T2 : notnull
+    internal class Map<T1, T2> where T1 : notnull where T2 : notnull
     {
         private readonly Dictionary<T1, T2> _forward = new();
         private readonly Dictionary<T2, T1> _reverse = new();

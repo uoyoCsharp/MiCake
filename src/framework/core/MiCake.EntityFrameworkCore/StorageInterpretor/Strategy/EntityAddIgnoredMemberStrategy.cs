@@ -1,11 +1,11 @@
-﻿using MiCake.Cord.Storage.Internal;
+﻿using MiCake.Cord.Storage;
 using Microsoft.EntityFrameworkCore;
 
 namespace MiCake.EntityFrameworkCore.StorageInterpretor.Strategy
 {
     internal class EntityAddIgnoredMemberStrategy : IConfigModelBuilderStrategy
     {
-        public ModelBuilder Config(ModelBuilder modelBuilder, StoreEntityType storeEntity, Type efModelType)
+        public ModelBuilder Config(ModelBuilder modelBuilder, IConventionStoreEntity storeEntity, Type efModelType)
         {
             var ignoredMembers = storeEntity.GetIgnoredMembers();
 

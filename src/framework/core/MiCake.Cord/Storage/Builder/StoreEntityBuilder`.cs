@@ -1,4 +1,6 @@
 ﻿using MiCake.Cord.Storage.Infrastructure;
+using MiCake.Cord.Storage.Internal;
+using MiCake.Core.Data;
 using System.Linq.Expressions;
 
 namespace MiCake.Cord.Storage.Builder
@@ -6,6 +8,8 @@ namespace MiCake.Cord.Storage.Builder
     public class StoreEntityBuilder<TEntity> : StoreEntityBuilder
         where TEntity : class
     {
+        StoreEntityType EntitySource => this.GetAccessor<StoreEntityType>();
+
         public StoreEntityBuilder(IStoreEntityType storeEntity) : base(storeEntity)
         {
         }
@@ -16,7 +20,7 @@ namespace MiCake.Cord.Storage.Builder
         public virtual StorePropertyBuilder<TProperty> Property<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpression)
         {
             var propertyInfo = propertyExpression.GetPropertyAccess();
-            return new StorePropertyBuilder<TProperty>(_entitySource.AddProperty(propertyInfo.Name, propertyInfo));
+            return new StorePropertyBuilder<TProperty>(EntitySource.AddProperty(propertyInfo.Name, propertyInfo));
         }
 
         /// <summary>
@@ -43,7 +47,7 @@ namespace MiCake.Cord.Storage.Builder
         /// </summary>
         public virtual StoreEntityBuilder HasQueryFilter(Expression<Func<TEntity, bool>> expression)
         {
-            _entitySource.AddQueryFilter(expression);
+            EntitySource.AddQueryFilter(expression);
             return this;
         }
     }

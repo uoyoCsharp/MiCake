@@ -2,6 +2,9 @@
 {
     //Inspired from https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/implement-value-objects
 
+    /// <summary>
+    /// <inheritdoc cref="IValueObject"/>
+    /// </summary>
     public abstract class ValueObject : IValueObject
     {
         protected static bool EqualOperator(ValueObject left, ValueObject right)
@@ -56,7 +59,10 @@
     }
 
     /// <summary>
-    /// A <see cref="IValueObject"/> use C# record.
+    /// <inheritdoc cref="IValueObject"/>
+    /// <para>
+    ///     A <see cref="IValueObject"/> use C# record.
+    /// </para>
     /// </summary>
     public abstract record RecordValueObject : IValueObject { };
 }

@@ -10,7 +10,7 @@ namespace MiCake.Cord.Modules;
 [CoreModule]
 public class MiCakeDDDModule : MiCakeModule
 {
-    public StoreConfig DomainModelStoreConfig { get; } = new StoreConfig();
+    public DomainObjectStoreConfig DomainModelStoreConfig { get; } = new DomainObjectStoreConfig();
 
     public override void PreConfigServices(ModuleConfigServiceContext context)
     {

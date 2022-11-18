@@ -3,11 +3,17 @@ using System.Reflection;
 
 namespace MiCake.DDD.Domain
 {
+    /// <summary>
+    /// <inheritdoc cref="IEntity{TKey}"/>
+    /// </summary>
     [Serializable]
     public abstract class Entity : Entity<int>
     {
     }
 
+    /// <summary>
+    /// <inheritdoc cref="IEntity{TKey}"/>
+    /// </summary>
     [Serializable]
     public abstract class Entity<TKey> : IEntity<TKey> where TKey : notnull
     {

@@ -1,11 +1,11 @@
-﻿using MiCake.Cord.Storage.Internal;
+﻿using MiCake.Cord.Storage;
 using Microsoft.EntityFrameworkCore;
 
 namespace MiCake.EntityFrameworkCore.StorageInterpretor.Strategy
 {
     internal class PropertyConfigStrategy : IConfigModelBuilderStrategy
     {
-        public ModelBuilder Config(ModelBuilder modelBuilder, StoreEntityType storeEntity, Type efModelType)
+        public ModelBuilder Config(ModelBuilder modelBuilder, IConventionStoreEntity storeEntity, Type efModelType)
         {
             var properties = storeEntity.GetProperties();
 
@@ -14,44 +14,49 @@ namespace MiCake.EntityFrameworkCore.StorageInterpretor.Strategy
 
             var entityBuilder = modelBuilder.Entity(efModelType);
 
-            foreach (StoreProperty property in properties)
+            foreach (var property in properties)
             {
+                if (property is not IConventionStoreProperty conventionProperty)
+                {
+                    continue;
+                }
+
                 var propertyName = property.Name;
                 var efcoreProperty = entityBuilder.Property(propertyName);
 
                 //consider splitting into multiple Strategy classes?
-                if (property.IsConcurrency.HasValue && property.IsConcurrency.Value)
+                if (conventionProperty.IsConcurrency.HasValue && conventionProperty.IsConcurrency.Value)
                     efcoreProperty.IsConcurrencyToken(true);
 
-                if (property.IsNullable.HasValue)
-                    efcoreProperty.IsRequired(!property.IsNullable.Value);
+                if (conventionProperty.IsNullable.HasValue)
+                    efcoreProperty.IsRequired(!conventionProperty.IsNullable.Value);
 
-                if (property.MaxLength.HasValue)
-                    efcoreProperty.HasMaxLength(property.MaxLength.Value);
+                if (conventionProperty.MaxLength.HasValue)
+                    efcoreProperty.HasMaxLength(conventionProperty.MaxLength.Value);
 
                 // config default value.
-                if (property.DefaultValue != null && property.DefaultValue.HasValue)
+                if (conventionProperty.DefaultValue != null && conventionProperty.DefaultValue.HasValue)
                 {
-                    var defaultValueConfig = property.DefaultValue.Value;
+                    var defaultValueConfig = conventionProperty.DefaultValue.Value;
 
-                    if (defaultValueConfig.ValueType == Cord.Storage.StorePropertyDefaultValueType.ClrValue)
+                    if (defaultValueConfig.ValueType == StorePropertyDefaultValueType.ClrValue)
                     {
                         efcoreProperty.HasDefaultValue(defaultValueConfig.DefaultValue);
                     }
-                    else if (defaultValueConfig.ValueType == Cord.Storage.StorePropertyDefaultValueType.SqlValue)
+                    else if (defaultValueConfig.ValueType == StorePropertyDefaultValueType.SqlValue)
                     {
                         efcoreProperty.HasDefaultValueSql(defaultValueConfig.DefaultValue as string);
                     }
 
-                    if (defaultValueConfig.SetOpportunity == Cord.Storage.StorePropertyDefaultValueSetOpportunity.Add)
+                    if (defaultValueConfig.SetOpportunity == StorePropertyDefaultValueSetOpportunity.Add)
                     {
                         efcoreProperty.ValueGeneratedOnAdd();
                     }
-                    else if (defaultValueConfig.SetOpportunity == Cord.Storage.StorePropertyDefaultValueSetOpportunity.Update)
+                    else if (defaultValueConfig.SetOpportunity == StorePropertyDefaultValueSetOpportunity.Update)
                     {
                         efcoreProperty.ValueGeneratedOnUpdate();
                     }
-                    else if (defaultValueConfig.SetOpportunity == Cord.Storage.StorePropertyDefaultValueSetOpportunity.AddAndUpdate)
+                    else if (defaultValueConfig.SetOpportunity == StorePropertyDefaultValueSetOpportunity.AddAndUpdate)
                     {
                         efcoreProperty.ValueGeneratedOnAddOrUpdate();
                     }

@@ -1,4 +1,5 @@
-﻿using MiCake.Cord.Storage.Internal;
+﻿using MiCake.Cord.Storage;
+using MiCake.Cord.Storage.Internal;
 using Microsoft.EntityFrameworkCore;
 
 namespace MiCake.EntityFrameworkCore.StorageInterpretor
@@ -12,6 +13,6 @@ namespace MiCake.EntityFrameworkCore.StorageInterpretor
         /// <summary>
         /// Configure the regulation of <see cref="StoreEntityType"/> to <see cref="ModelBuilder"/> according to a rule
         /// </summary>
-        ModelBuilder Config(ModelBuilder modelBuilder, StoreEntityType storeEntity, Type efModelType);
+        ModelBuilder Config(ModelBuilder modelBuilder, IConventionStoreEntity storeEntity, Type efModelType);
     }
 }

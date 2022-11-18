@@ -36,7 +36,7 @@ namespace MiCake.Core.Modularity
         /// <param name="selector">a selector,see <see cref="CustomRepositorySelector"/>.</param>
         public static void AutoRegisterRepositories(this ModuleConfigServiceContext context, Assembly assembly, CustomRepositorySelector selector)
         {
-            var allRepoTypes = assembly.GetTypes().Where(s => TypeHelper.IsConcrete(s) && typeof(IRepository).IsAssignableFrom(s));
+            var allRepoTypes = assembly.GetTypes().Where(s => TypeHelper.IsInstantiable(s) && typeof(IRepository).IsAssignableFrom(s));
 
             List<(Type repoInterface, Type repo)> result = new();
 

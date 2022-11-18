@@ -2,7 +2,7 @@
 
 namespace MiCake.Cord.Storage
 {
-    public class StoreModel : IStoreModel
+    internal class StoreModel : IStoreModel
     {
         private readonly Dictionary<Type, StoreEntityType> _storeEntityTypes = new();
 

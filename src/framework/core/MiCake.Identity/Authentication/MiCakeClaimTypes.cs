@@ -3,7 +3,7 @@
     /// <summary>
     /// MiCake preset claim type names.
     /// </summary>
-    public class MiCakeClaimTypes
+    public static class MiCakeClaimTypes
     {
         public const string UserId = "id";
 

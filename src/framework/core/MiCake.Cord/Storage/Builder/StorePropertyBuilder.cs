@@ -6,7 +6,7 @@ namespace MiCake.Cord.Storage.Builder
 {
     public class StorePropertyBuilder : IHasAccessor<StoreProperty>
     {
-        protected readonly StoreProperty _propertySource;
+        private readonly StoreProperty _propertySource;
 
         StoreProperty IHasAccessor<StoreProperty>.AccessibleData => _propertySource;
 

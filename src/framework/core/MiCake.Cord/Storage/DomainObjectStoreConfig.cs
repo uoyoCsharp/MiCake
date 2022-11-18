@@ -5,17 +5,21 @@ using System.Collections.Concurrent;
 namespace MiCake.Cord.Storage
 {
     /// <summary>
-    /// This is an internal API  not subject to the same compatibility standards as public APIs.
+    /// This is an internal API not subject to the same compatibility standards as public APIs.
     /// It may be changed or removed without notice in any release.
+    /// 
+    /// <para>
+    ///     this model is used to configure storage relationships for domain objects.
+    /// </para>
     /// </summary>
-    public class StoreConfig : IDisposable
+    public class DomainObjectStoreConfig : IDisposable
     {
         private const string StoreModelCacheKey = "MiCake.StoreModel.Key";
 
         private readonly ConcurrentDictionary<string, Lazy<IStoreModel>> _storeModels = new();
         private readonly ConcurrentDictionary<string, IStoreModelProvider> _modelProviders = new();
 
-        public StoreConfig()
+        public DomainObjectStoreConfig()
         {
         }
 
@@ -48,7 +52,7 @@ namespace MiCake.Cord.Storage
         /// 
         /// Add <see cref="IStoreModelProvider"/> to this configer.
         /// </summary>
-        public virtual StoreConfig AddModelProvider(IStoreModelProvider storeModelProvider)
+        public virtual DomainObjectStoreConfig AddModelProvider(IStoreModelProvider storeModelProvider)
         {
             CheckValue.NotNull(storeModelProvider, nameof(storeModelProvider));
 

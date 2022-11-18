@@ -1,5 +1,4 @@
 ﻿using MiCake.Cord.Storage;
-using MiCake.Cord.Storage.Internal;
 using MiCake.Cord.Storage.Interpretor;
 using MiCake.Core.Util;
 using MiCake.Core.Util.Reflection;
@@ -24,10 +23,15 @@ namespace MiCake.EntityFrameworkCore.StorageInterpretor
             var efEntities = receiver.Model.GetEntityTypes();
             var configEntities = storeModel.GetStoreEntities();
 
-            foreach (StoreEntityType configEntity in configEntities)
+            foreach (var configEntity in configEntities)
             {
-                var clrType = configEntity.ClrType;
+                if (configEntities is not IStoreEntityType storeEntity || configEntities is not IConventionStoreEntity conventionEntity)
+                {
+                    // todo: log some debug error info.
+                    continue;
+                }
 
+                var clrType = storeEntity.ClrType;
                 foreach (var efEntity in efEntities)
                 {
                     var efClrType = efEntity.ClrType;
@@ -36,7 +40,7 @@ namespace MiCake.EntityFrameworkCore.StorageInterpretor
                     {
                         foreach (var configStrategy in _options.Strategies)
                         {
-                            configStrategy.Config(receiver, configEntity, efClrType);
+                            configStrategy.Config(receiver, conventionEntity, efClrType);
                         }
                     }
                 }

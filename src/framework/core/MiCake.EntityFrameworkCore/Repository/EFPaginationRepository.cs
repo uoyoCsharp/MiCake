@@ -16,7 +16,7 @@ namespace MiCake.EntityFrameworkCore.Repository
 
         public virtual async Task<PagingQueryResult<TAggregateRoot>> PagingQueryAsync(PaginationFilter queryModel, CancellationToken cancellationToken = default)
         {
-            var result = await DbSet.Skip(queryModel.CurrentStartNo).Take(queryModel.PageSize).ToListAsync(cancellationToken: cancellationToken);
+            var result = await DbSet.OrderBy(s => s.Id).Skip(queryModel.CurrentStartNo).Take(queryModel.PageSize).ToListAsync(cancellationToken: cancellationToken);
             var count = await GetCountAsync(cancellationToken);
 
             return new PagingQueryResult<TAggregateRoot>(queryModel.PageIndex, count, result);

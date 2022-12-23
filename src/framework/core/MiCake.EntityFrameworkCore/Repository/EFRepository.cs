@@ -14,7 +14,7 @@ namespace MiCake.EntityFrameworkCore.Repository
         {
         }
 
-        public virtual async ValueTask<TAggregateRoot> AddAndReturnAsync(TAggregateRoot aggregateRoot, bool autoExecute = false, CancellationToken cancellationToken = default)
+        public virtual async ValueTask<TAggregateRoot> AddAndReturnAsync(TAggregateRoot aggregateRoot, bool autoExecute = true, CancellationToken cancellationToken = default)
         {
             var entityInfo = await DbSet.AddAsync(aggregateRoot, cancellationToken);
 
@@ -39,9 +39,7 @@ namespace MiCake.EntityFrameworkCore.Repository
         {
             CheckValue.NotNull(ID, nameof(ID));
 
-            var item = await DbSet.FindAsync(new object[] { ID! }, cancellationToken);
-            if (item != null)
-                DbSet.Remove(item);
+            await DbSet.Where(s => s.Id!.Equals(ID)).ExecuteDeleteAsync(cancellationToken: cancellationToken);
         }
 
         public virtual Task UpdateAsync(TAggregateRoot aggregateRoot, CancellationToken cancellationToken = default)
